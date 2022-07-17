@@ -13,6 +13,12 @@ use Illuminate\Support\Str;
 
 class ParkingSpaceService
 {
+    /**
+     * Creates a new parking space in the database and returns the created instance
+     *
+     * @param string $vehicleTypeId
+     * @return ParkingSpace
+     */
     public function createNewParkingSpace(string $vehicleTypeId) : ParkingSpace
     {
         $parkingSpace = new ParkingSpace();
@@ -21,12 +27,21 @@ class ParkingSpaceService
         return $parkingSpace;
     }
 
+    /**
+     * Parks vehicle by updating specified parking space in the database with a uuid for the vehicle
+     * and marking it as occupied. Takes into account a continuous rate if vehicle has came back within an hour to re-park.
+     *
+     * @param int $gateId The gate ID / gate # where the vehicle is coming in. ID number is not necessarily near the the corresponding parking space ID
+     * @param string|null $vehicleId (Optional) A uuid of the vehicle as a reference for a vehicle that is coming back
+     * @param integer $vehicleTypeId The vehicle type ID of the vehicle type coming into the parking space
+     * @param string $timestamp Manually inputted timestamp of when the vehicle has parked
+     * @return ParkingSpace 
+     */
     public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId, string $timestamp) : ParkingSpace
     {
         $gate = Gate::find($gateId);
         $diff = null;
 
-        // Check for existing session
         if (!empty($vehicleId)) {
             $dateUtils = new DateUtilities();
 
@@ -38,11 +53,10 @@ class ParkingSpaceService
             $diff = empty($existingSession) ? $diff : $dateUtils->getTimeDifference($existingSession->left_on, $timestamp);
         }
         
-        // Continue existing session if time difference is less than or equal to 60 minutes
         if (!empty($diff) && $diff <= 60) {
             $parkingSpace = $existingSession;
         } else {
-            // else create a new session
+            
             $getClosestParkingSpaceFromGate = new GetClosestParkingSpaceFromGate(); 
             $parkingSpace = $getClosestParkingSpaceFromGate->handle($gate->nearest_space, $vehicleTypeId);
         }
@@ -55,7 +69,14 @@ class ParkingSpaceService
         return $parkingSpace;
     }
 
-    public function unparkVehicle(string $uuid, string $timestamp)
+    /**
+     * Unparks vehicle by uuid
+     *
+     * @param string $uuid Uuid of the parked vehicle
+     * @param string $timestamp Manually inputted timestamp of when the vehicle will unpark
+     * @return ParkingSpace
+     */
+    public function unparkVehicle(string $uuid, string $timestamp) : ParkingSpace
     {
         $computeParkingFee = new ComputeParkingFee();
 
