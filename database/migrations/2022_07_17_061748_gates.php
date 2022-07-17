@@ -19,12 +19,6 @@ return new class extends Migration
             $table->foreignId('nearest_space');
             $table->timestamps();
         });
-        
-        DB::table('gates')->insert([
-            ['nearest_space' => 9],
-            ['nearest_space' => 6],
-            ['nearest_space' => 3],
-        ]);
     }
 
     /**
