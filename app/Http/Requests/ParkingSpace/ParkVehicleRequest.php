@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ParkingSpace;
 
+use App\Rules\ParkingNotFull;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ParkVehicleRequest extends FormRequest
@@ -13,7 +14,7 @@ class ParkVehicleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class ParkVehicleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'gate' => ['required', 'exists:gates,id'],
+            'uuid' => ['nullable', 'uuid', 'exists:parking_spaces,vehicle_id'],
+            'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull],
+            'timestamp' => ['required', 'date']
         ];
     }
 }

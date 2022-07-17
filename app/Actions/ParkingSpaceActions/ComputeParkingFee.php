@@ -130,7 +130,7 @@ class ComputeParkingFee
     public function filterChunkRate(int $hours) : array
     {
         $chunkableMultiplier = floor($hours / 24);
-        $remainingHours = $hours ($chunkableMultiplier * 24);
+        $remainingHours = $hours - ($chunkableMultiplier * 24);
         $calcs = $this->filter24Hours($remainingHours);
         $calcs['chunk_multiplier'] = $chunkableMultiplier;
         return $calcs;

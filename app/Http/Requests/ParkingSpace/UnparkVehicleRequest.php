@@ -13,7 +13,7 @@ class UnparkVehicleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,9 @@ class UnparkVehicleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
+        return [ 
+            'uuid' => ['required', 'uuid', 'exists:parking_spaces,vehicle_id'],
+            'timestamp' => ['required', 'date']
         ];
     }
 }
