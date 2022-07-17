@@ -7,8 +7,6 @@ use App\Actions\ParkingSpaceActions\GetClosestParkingSpaceFromGate;
 use App\Models\Gate;
 use App\Models\ParkingSpace;
 use App\Utilities\DateUtilities;
-use App\Utilities\Utilities;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ParkingSpaceService
