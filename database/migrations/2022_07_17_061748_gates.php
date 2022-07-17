@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('gates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('nearest_space');
             $table->timestamps();
         });
     }
