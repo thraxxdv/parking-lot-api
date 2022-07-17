@@ -4,7 +4,7 @@ namespace App\Utilities;
 
 use Illuminate\Support\Collection;
 
-class Utilities
+class NumberUtilities
 {
     /**
      * Gets the closest number in an array to the given base number
