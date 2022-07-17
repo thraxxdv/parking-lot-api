@@ -21,10 +21,10 @@ class ParkingSpaceController extends Controller
             'vehicle_type_id' => ['required', 'exists:vehicle_types,id'],
         ]);
 
-        return response()->json($this->parkingSpaceService->createNewParkingSpace($validated['vehicle_type_id']), 200);
+        return response()->json($this->parkingSpaceService->createNewParkingSpace($validated['vehicle_type_id']), 201);
     }
 
-    public function storeParkingVehicle(Request $request)
+    public function parkVehicle(Request $request)
     {
         $validated = $request->validate([
             'gate' => ['required', 'exists:gates,id'],
@@ -34,5 +34,10 @@ class ParkingSpaceController extends Controller
         ]);
 
         return $this->parkingSpaceService->parkVehicle($validated['gate'], !empty($validated['uuid']) ? $validated['uuid'] : null, $validated['vehicle_type_id'], $validated['timestamp']);
+    }
+
+    public function unparkVehicle(Request $request)
+    {
+        # code...
     }
 }

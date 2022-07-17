@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    Route::get('/parking/create', [ParkingSpaceController::class, 'store']);
-    Route::get('/parking/park-vehicle', [ParkingSpaceController::class, 'storeParkingVehicle']);
+    Route::post('/parking/create', [ParkingSpaceController::class, 'store']);
+    Route::put('/parking/park-vehicle', [ParkingSpaceController::class, 'parkVehicle']);
+    Route::put('/parking/unpark-vehicle', [ParkingSpaceController::class, 'unparkVehicle']);
 });
