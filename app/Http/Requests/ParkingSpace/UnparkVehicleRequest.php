@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ParkingSpace;
 
+use App\Rules\UnparkTimeAfterParkingTime;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UnparkVehicleRequest extends FormRequest
@@ -23,9 +24,10 @@ class UnparkVehicleRequest extends FormRequest
      */
     public function rules()
     {
+        
         return [ 
             'uuid' => ['required', 'uuid', 'exists:parking_spaces,vehicle_id'],
-            'timestamp' => ['required', 'date']
+            'timestamp' => ['required', 'date', new UnparkTimeAfterParkingTime($this->input('uuid'))]
         ];
     }
 }

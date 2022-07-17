@@ -21,6 +21,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
     Route::post('/parking/create', [ParkingSpaceController::class, 'createParkingSpace']);
-    Route::put('/parking/park-vehicle', [ParkingSpaceController::class, 'parkVehicle']);
-    Route::put('/parking/unpark-vehicle', [ParkingSpaceController::class, 'unparkVehicle']);
+    Route::put('/parking/park', [ParkingSpaceController::class, 'parkVehicle']);
+    Route::put('/parking/unpark', [ParkingSpaceController::class, 'unparkVehicle']);
 });
