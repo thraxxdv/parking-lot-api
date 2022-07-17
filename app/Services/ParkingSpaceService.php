@@ -53,4 +53,9 @@ class ParkingSpaceService
 
         return $parkingSpace;
     }
+
+    public function unparkVehicle(string $uuid)
+    {
+        
+    }
 }

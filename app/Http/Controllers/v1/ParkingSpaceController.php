@@ -17,9 +17,7 @@ class ParkingSpaceController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'vehicle_type_id' => ['required', 'exists:vehicle_types,id'],
-        ]);
+        $validated = $request->validate([ 'vehicle_type_id' => ['required', 'exists:vehicle_types,id'] ]);
 
         return response()->json($this->parkingSpaceService->createNewParkingSpace($validated['vehicle_type_id']), 201);
     }
@@ -28,7 +26,7 @@ class ParkingSpaceController extends Controller
     {
         $validated = $request->validate([
             'gate' => ['required', 'exists:gates,id'],
-            'uuid' => ['nullable', 'uuid'],
+            'uuid' => ['nullable', 'uuid', 'exists:parking_spaces,vehicle_id'],
             'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull],
             'timestamp' => ['required']
         ]);
@@ -38,6 +36,8 @@ class ParkingSpaceController extends Controller
 
     public function unparkVehicle(Request $request)
     {
-        # code...
+        $validated = $request->validate([ 'uuid' => ['required', 'uuid', 'exists:parking_spaces,vehicle_id'] ]);
+
+        
     }
 }
