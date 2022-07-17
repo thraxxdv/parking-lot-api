@@ -4,7 +4,6 @@ namespace App\Actions\ParkingSpaceActions;
 
 use App\Models\VehicleType;
 use App\Utilities\DateUtilities;
-use Illuminate\Support\Facades\Log;
 
 class ComputeParkingFee
 {
@@ -24,7 +23,7 @@ class ComputeParkingFee
     {
         $dateUtilities = new DateUtilities();
         $hours = ceil($dateUtilities->getTimeDifference($parkedOn, $leftOn) / 60);
-        Log::debug($hours);
+
         return $this->calculateFee($hours, $vehicleType);
     }
 
@@ -78,7 +77,7 @@ class ComputeParkingFee
     private function calculateVehicleRate(int $hours, int $vehicleTypeId) : float
     {
         $vehicleType = VehicleType::find($vehicleTypeId);
-        Log::debug($vehicleType);
+
         return $vehicleType->rate * $hours;
     }
 
