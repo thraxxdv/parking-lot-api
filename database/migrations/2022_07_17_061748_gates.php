@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -18,6 +19,12 @@ return new class extends Migration
             $table->foreignId('nearest_space');
             $table->timestamps();
         });
+        
+        DB::table('gates')->insert([
+            ['nearest_space' => 9],
+            ['nearest_space' => 6],
+            ['nearest_space' => 3],
+        ]);
     }
 
     /**
