@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Actions\ParkingSpaceActions\ComputeParkingFee;
 use App\Actions\ParkingSpaceActions\GetClosestParkingSpaceFromGate;
 use App\Models\Gate;
 use App\Models\ParkingSpace;
@@ -54,8 +55,16 @@ class ParkingSpaceService
         return $parkingSpace;
     }
 
-    public function unparkVehicle(string $uuid)
+    public function unparkVehicle(string $uuid, string $timestamp)
     {
-        
+        $computeParkingFee = new ComputeParkingFee();
+
+        $parkingSpace = ParkingSpace::where('vehicle_id', $uuid)->first();
+        $parkingSpace->left_on = $timestamp;
+        $parkingSpace->is_occupied = 0;
+        $parkingSpace->save();
+
+        $parkingSpace->fee = $computeParkingFee->handle($parkingSpace->parked_on, $parkingSpace->left_on, $parkingSpace->vehicle_type_id);
+        return $parkingSpace;
     }
 }
