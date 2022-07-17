@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('parking_spaces', function (Blueprint $table) {
             $table->id();
-            $table->uuid('vehicle_id');
+            $table->uuid('vehicle_id')->nullable();
             $table->foreignId('vehicle_type_id');
             $table->boolean('is_occupied')->default(false);
-            $table->timestamp('parked_on');
-            $table->timestamp('left_on');
+            $table->timestamp('parked_on')->nullable();
+            $table->timestamp('left_on')->nullable();
         });
     }
 
