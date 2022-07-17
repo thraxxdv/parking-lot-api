@@ -32,6 +32,8 @@ class ParkingSpaceService
         $gate = Gate::find($gateId);
         $parkingSpace = $this->getClosestSpaceFromGate($gate->nearest_space, $vehicleTypeId);
         $parkingSpace->is_occupied = 1;
+        $parkingSpace->vehicle_id = Str::uuid();
+        $parkingSpace->parked_on = now();
         $parkingSpace->save();
         return $parkingSpace;
     }

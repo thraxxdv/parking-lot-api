@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Rules\ParkingNotFull;
 use App\Services\ParkingSpaceService;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,7 @@ class ParkingSpaceController extends Controller
         $validated = $request->validate([
             'gate' => ['required', 'exists:gates,id'],
             'uuid' => ['nullable', 'uuid'],
-            'vehicle_type_id' => ['required', 'exists:vehicle_types,id']
+            'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull]
         ]);
 
         return $this->parkingSpaceService->parkVehicle($validated['gate'], in_array('uuid', $validated) ? $validated['uuid'] : null, $validated['vehicle_type_id']);
