@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Actions\ParkingSpaceActions\GetClosestParkingSpaceFromGate;
 use App\Models\Gate;
 use App\Models\ParkingSpace;
+use App\Utilities\DateUtilities;
 use App\Utilities\Utilities;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -13,25 +14,43 @@ class ParkingSpaceService
 {
     public function createNewParkingSpace(string $vehicleTypeId) : ParkingSpace
     {
-        try {
-            $parkingSpace = new ParkingSpace();
-            $parkingSpace->vehicle_type_id = $vehicleTypeId;
-            $parkingSpace->save();
-            return $parkingSpace;
-        } catch (\Throwable $th) {
-            abort(500);
-        }
+        $parkingSpace = new ParkingSpace();
+        $parkingSpace->vehicle_type_id = $vehicleTypeId;
+        $parkingSpace->save();
+        return $parkingSpace;
     }
 
-    public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId) : ParkingSpace
+    public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId, string $timestamp) : ParkingSpace
     {
-        $getClosestParkingSpaceFromGate = new GetClosestParkingSpaceFromGate(); 
         $gate = Gate::find($gateId);
-        $parkingSpace = $getClosestParkingSpaceFromGate->handle($gate->nearest_space, $vehicleTypeId);
+        $diff = null;
+
+        // Check for existing session
+        if (!empty($vehicleId)) {
+            $dateUtils = new DateUtilities();
+
+            $existingSession = ParkingSpace::where([
+                ['vehicle_id', $vehicleId],
+                ['is_occupied', 0]
+            ])->first();
+
+            $diff = empty($existingSession) ? $diff : $dateUtils->getTimeDifference($existingSession->left_on, $timestamp);
+        }
+        
+        // Continue existing session if time difference is less than or equal to 60 minutes
+        if (!empty($diff) && $diff <= 60) {
+            $parkingSpace = $existingSession;
+        } else {
+            // else create a new session
+            $getClosestParkingSpaceFromGate = new GetClosestParkingSpaceFromGate(); 
+            $parkingSpace = $getClosestParkingSpaceFromGate->handle($gate->nearest_space, $vehicleTypeId);
+        }
+
         $parkingSpace->is_occupied = 1;
-        $parkingSpace->vehicle_id = Str::uuid();
-        $parkingSpace->parked_on = now();
+        $parkingSpace->vehicle_id = !empty($diff) ? $existingSession->vehicle_id : Str::uuid();
+        $parkingSpace->parked_on = !empty($diff) ? $existingSession->parked_on : $timestamp;
         $parkingSpace->save();
+
         return $parkingSpace;
     }
 }

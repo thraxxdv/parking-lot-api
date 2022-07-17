@@ -29,9 +29,10 @@ class ParkingSpaceController extends Controller
         $validated = $request->validate([
             'gate' => ['required', 'exists:gates,id'],
             'uuid' => ['nullable', 'uuid'],
-            'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull]
+            'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull],
+            'timestamp' => ['required']
         ]);
 
-        return $this->parkingSpaceService->parkVehicle($validated['gate'], in_array('uuid', $validated) ? $validated['uuid'] : null, $validated['vehicle_type_id']);
+        return $this->parkingSpaceService->parkVehicle($validated['gate'], !empty($validated['uuid']) ? $validated['uuid'] : null, $validated['vehicle_type_id'], $validated['timestamp']);
     }
 }
