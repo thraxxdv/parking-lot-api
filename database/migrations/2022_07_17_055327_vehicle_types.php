@@ -17,13 +17,14 @@ return new class extends Migration
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->id();
             $table->char('type', 1);
+            $table->float('rate');
             $table->timestamps();
         });
 
         DB::table('vehicle_types')->insert([
-                ['id' => 1, 'type'  => 'S'],
-                ['id' => 2, 'type'  => 'M'],
-                ['id' => 3, 'type'  => 'L'],
+                ['id' => 1, 'type'  => 'S', 'rate' => 20],
+                ['id' => 2, 'type'  => 'M', 'rate' => 60],
+                ['id' => 3, 'type'  => 'L', 'rate' => 100],
             ],
         );
     }
