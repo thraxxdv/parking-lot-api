@@ -14,7 +14,6 @@ class ParkingSpaceController extends Controller
         $this->parkingSpaceService = new ParkingSpaceService();
     }
 
-    //
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -22,5 +21,14 @@ class ParkingSpaceController extends Controller
         ]);
 
         return response()->json($this->parkingSpaceService->createNewParkingSpace($validated['vehicle_type_id']), 200);
+    }
+
+    public function storeParkingVehicle(Request $request)
+    {
+        $validated = $request->validate([
+            'gate' => ['required', 'exists:gates,id'],
+            'uuid' => ['nullable', 'uuid'],
+            'vehicle_type_id' => ['required', 'exists:vehicle_types,id']
+        ]);
     }
 }

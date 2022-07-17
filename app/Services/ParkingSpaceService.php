@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ParkingSpace;
+use Illuminate\Support\Str;
 
 class ParkingSpaceService
 {
@@ -17,5 +18,10 @@ class ParkingSpaceService
         } catch (\Throwable $th) {
             abort(500);
         }
+    }
+
+    public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId)
+    {
+        
     }
 }
