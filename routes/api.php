@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\GateController;
 use App\Http\Controllers\v1\ParkingSpaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,7 @@ Route::prefix('v1')->group(function(){
     Route::post('/parking/create', [ParkingSpaceController::class, 'createParkingSpace']);
     Route::put('/parking/park', [ParkingSpaceController::class, 'parkVehicle']);
     Route::put('/parking/unpark', [ParkingSpaceController::class, 'unparkVehicle']);
+
+    Route::post('/gate/create', [GateController::class, 'createGate']);
+    Route::delete('/gate/delete', [GateController::class, 'deleteGate']);
 });
