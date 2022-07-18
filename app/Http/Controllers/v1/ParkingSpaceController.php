@@ -16,6 +16,11 @@ class ParkingSpaceController extends Controller
         $this->parkingSpaceService = new ParkingSpaceService();
     }
 
+    public function getParkingSpaces()
+    {
+        return response()->json($this->parkingSpaceService->getParkingSpaces());
+    }
+
     public function createParkingSpace(Request $request)
     {
         $validated = $request->validate([ 'vehicle_type_id' => ['required', 'exists:vehicle_types,id'] ]);

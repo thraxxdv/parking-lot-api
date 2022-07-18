@@ -7,10 +7,22 @@ use App\Actions\ParkingSpaceActions\GetClosestParkingSpaceFromGate;
 use App\Models\Gate;
 use App\Models\ParkingSpace;
 use App\Utilities\DateUtilities;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class ParkingSpaceService
 {
+
+    /**
+     * Returns a collection of all parking spaces in the database
+     *
+     * @return ParkingSpace
+     */
+    public function getParkingSpaces() : Collection
+    {
+        return ParkingSpace::get();
+    }
+
     /**
      * Creates a new parking space in the database and returns the created instance
      *
