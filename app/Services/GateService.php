@@ -14,4 +14,10 @@ class GateService
 
         return $gate;
     }
+
+    public function deleteGate(int $nearestSpace)
+    {
+        $gate = Gate::where('nearest_space', $nearestSpace)->firstOrfail();
+        $gate->delete();
+    }
 }
