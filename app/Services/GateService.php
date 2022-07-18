@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Services;
 
 use App\Models\Gate;
 
-class GateService {
+class GateService
+{
     public function createGate(int $nearestSpace)
     {
         $gate = new Gate();
