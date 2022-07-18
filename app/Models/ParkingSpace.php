@@ -11,4 +11,9 @@ class ParkingSpace extends Model
 
     protected $table = "parking_spaces";
     public $timestamps = false;
+
+    public function gate()
+    {
+        return $this->hasOne(Gate::class, 'nearest_space');
+    }
 }
