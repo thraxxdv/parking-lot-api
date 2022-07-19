@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ParkingSpace\CreateParkingRequest;
 use App\Http\Requests\ParkingSpace\ParkVehicleRequest;
 use App\Http\Requests\ParkingSpace\UnparkVehicleRequest;
 use App\Services\ParkingSpaceService;
@@ -21,9 +22,9 @@ class ParkingSpaceController extends Controller
         return response()->json($this->parkingSpaceService->getParkingSpaces());
     }
 
-    public function createParkingSpace(Request $request)
+    public function createParkingSpace(CreateParkingRequest $request)
     {
-        $validated = $request->validate([ 'vehicle_type_id' => ['required', 'exists:vehicle_types,id'] ]);
+        $validated = $request->validated();
 
         return response()->json($this->parkingSpaceService->createNewParkingSpace($validated['vehicle_type_id']), 201);
     }
