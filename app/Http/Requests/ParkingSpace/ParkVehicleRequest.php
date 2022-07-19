@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ParkingSpace;
 
 use App\Rules\ParkingNotFull;
+use App\Rules\ParkingSpace\IsVehicleIdInSpace;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ParkVehicleRequest extends FormRequest
@@ -26,7 +27,7 @@ class ParkVehicleRequest extends FormRequest
     {
         return [
             'gate' => ['required', 'exists:gates,id'],
-            'uuid' => ['nullable', 'uuid'],
+            'uuid' => ['nullable', 'uuid', new IsVehicleIdInSpace()],
             'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull],
             'timestamp' => ['required', 'date']
         ];
