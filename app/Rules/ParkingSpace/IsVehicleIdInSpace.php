@@ -5,13 +5,14 @@ namespace App\Rules\ParkingSpace;
 use App\Models\ParkingSpace;
 use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * Checks if the vehicle ID is already parked. The parameter
+ * `$inverseResult` can be set to true. If set to true, it checks
+ * if the vehicle ID has already unparked in the space.
+ */
 class IsVehicleIdInSpace implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
+    
     private $inverseResult;
     private $inSpace;
     public function __construct($inverseResult = false)
@@ -19,13 +20,6 @@ class IsVehicleIdInSpace implements Rule
         $this->inverseResult = $inverseResult;
     }
 
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
     public function passes($attribute, $value)
     {
         $this->inSpace = ParkingSpace::where([
@@ -36,11 +30,6 @@ class IsVehicleIdInSpace implements Rule
         return $this->inverseResult ? $this->inSpace : !$this->inSpace;
     }
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
     public function message()
     {
         return $this->inSpace ? "This vehicle is already parked here." : "This vehicle has already unparked here";
