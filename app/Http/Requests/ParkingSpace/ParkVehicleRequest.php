@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\ParkingSpace;
 
-use App\Rules\ParkingNotFull;
+use App\Rules\ParkingSpace\ParkingNotFull;
 use App\Rules\ParkingSpace\IsVehicleIdInSpace;
 use Illuminate\Foundation\Http\FormRequest;
 

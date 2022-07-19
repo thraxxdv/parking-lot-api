@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Rules;
+namespace App\Rules\ParkingSpace;
 
 use App\Models\ParkingSpace;
 use Illuminate\Contracts\Validation\Rule;
 
-class ParkingNotFull implements Rule
+class UnparkTimeAfterParkingTime implements Rule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    private $parkingSpace;
+    public function __construct(string $uuid)
     {
-        //
+        $this->parkingSpace = ParkingSpace::where('vehicle_id', $uuid)->firstOrFail();
     }
 
     /**
-     * Check if there is an available parking space for the vehicle type
+     * Determine if the validation rule passes.
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -26,12 +27,7 @@ class ParkingNotFull implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ParkingSpace::where(
-            [
-                ['vehicle_type_id', '>=', $value],
-                ['is_occupied', 0]
-            ]
-        )->exists();
+        return $this->parkingSpace->parked_on < $value;
     }
 
     /**
@@ -41,6 +37,6 @@ class ParkingNotFull implements Rule
      */
     public function message()
     {
-        return 'There are no longer any parking space available for your vehicle type.';
+        return 'Unpark time must be after parking time. You have parked on ' . $this->parkingSpace->parked_on . ".";
     }
 }

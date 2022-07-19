@@ -3,7 +3,7 @@
 namespace App\Http\Requests\ParkingSpace;
 
 use App\Rules\ParkingSpace\IsVehicleIdInSpace;
-use App\Rules\UnparkTimeAfterParkingTime;
+use App\Rules\ParkingSpace\UnparkTimeAfterParkingTime;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UnparkVehicleRequest extends FormRequest
