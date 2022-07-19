@@ -19,6 +19,10 @@ class GateController extends Controller
         $this->gateService = new GateService();
     }
 
+    public function getGates()
+    {
+        return response()->json($this->gateService->getGates());
+    }
 
     public function createGate(CreateGateRequest $request)
     {

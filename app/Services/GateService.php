@@ -6,6 +6,12 @@ use App\Models\Gate;
 
 class GateService
 {
+
+    public function getGates()
+    {
+        return Gate::all();
+    }
+
     public function createGate(int $nearestSpace)
     {
         $gate = new Gate();

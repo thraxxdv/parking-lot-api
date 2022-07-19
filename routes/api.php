@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function(){
     Route::put('/parking/park', [ParkingSpaceController::class, 'parkVehicle']);
     Route::put('/parking/unpark', [ParkingSpaceController::class, 'unparkVehicle']);
 
+    Route::get('/gate/get', [GateController::class, 'getGates']);
     Route::post('/gate/create', [GateController::class, 'createGate']);
     Route::delete('/gate/delete', [GateController::class, 'deleteGate']);
 });
