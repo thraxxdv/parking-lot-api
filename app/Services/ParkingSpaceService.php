@@ -52,7 +52,7 @@ class ParkingSpaceService
         $gate = Gate::find($gateId);
         $diff = null;
 
-        if (!empty($vehicleId)) {
+        if (!empty($vehicleId) && ParkingSpace::where('vehicle_id', $vehicleId)->exists()) {
             $dateUtils = new DateUtilities();
 
             $existingSession = ParkingSpace::where([

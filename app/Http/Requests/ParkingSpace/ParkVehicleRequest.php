@@ -26,7 +26,7 @@ class ParkVehicleRequest extends FormRequest
     {
         return [
             'gate' => ['required', 'exists:gates,id'],
-            'uuid' => ['nullable', 'uuid', 'exists:parking_spaces,vehicle_id'],
+            'uuid' => ['nullable', 'uuid'],
             'vehicle_type_id' => ['required', 'exists:vehicle_types,id', new ParkingNotFull],
             'timestamp' => ['required', 'date']
         ];
