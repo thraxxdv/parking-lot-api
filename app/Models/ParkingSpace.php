@@ -16,4 +16,9 @@ class ParkingSpace extends Model
     {
         return $this->hasOne(Gate::class, 'nearest_space');
     }
+
+    public function vehicleType()
+    {
+        return $this->belongsTo(VehicleType::class);
+    }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class VehicleType extends Model
 {
     use HasFactory;
+
+    public function parkingSpace()
+    {
+        return $this->hasOne(ParkingSpace::class);
+    }
 }
