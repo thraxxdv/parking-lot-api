@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Gate\CreateGateRequest;
+use App\Http\Requests\Gate\DeleteGateRequest;
 use App\Rules\Gate\IsNearestSpaceFromGateTaken;
 use App\Rules\Gate\ValidateGateCount;
 use App\Services\GateService;
@@ -18,16 +20,16 @@ class GateController extends Controller
     }
 
 
-    public function createGate(Request $request)
+    public function createGate(CreateGateRequest $request)
     {
-        $validated = $request->validate([ 'nearest_space' => [ 'exists:parking_spaces,id', new IsNearestSpaceFromGateTaken ] ]);
+        $validated = $request->validated();
 
         return response()->json($this->gateService->createGate($validated['nearest_space']), 201);
     }
 
-    public function deleteGate(Request $request)
+    public function deleteGate(DeleteGateRequest $request)
     {
-        $validated = $request->validate([ 'nearest_space' => [ 'exists:gates,nearest_space', new ValidateGateCount ] ]);
+        $validated = $request->validated();
 
         return response()->json($this->gateService->deleteGate($validated['nearest_space']), 204);
     }
