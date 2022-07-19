@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rules;
+namespace App\Rules\Gate;
 
 use App\Models\Gate;
 use Illuminate\Contracts\Validation\Rule;
 
-class ValidateGateCount implements Rule
+class IsNearestSpaceFromGateTaken implements Rule
 {
     /**
      * Create a new rule instance.
@@ -26,7 +26,7 @@ class ValidateGateCount implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Gate::count() == 3 ? false : true;
+        return !Gate::where('nearest_space', $value)->exists();
     }
 
     /**
@@ -36,6 +36,6 @@ class ValidateGateCount implements Rule
      */
     public function message()
     {
-        return 'No more gates can be deleted because there can be no less than 3 gates at a time.';
+        return 'There is already a gate in this space. Please choose another parking space.';
     }
 }

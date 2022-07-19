@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Rules\IsNearestSpaceFromGateTaken;
-use App\Rules\ValidateGateCount;
+use App\Rules\Gate\IsNearestSpaceFromGateTaken;
+use App\Rules\Gate\ValidateGateCount;
 use App\Services\GateService;
 use Illuminate\Http\Request;
 
