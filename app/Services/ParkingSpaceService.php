@@ -20,7 +20,7 @@ class ParkingSpaceService
      */
     public function getParkingSpaces(): Collection
     {
-        return ParkingSpace::with('gate', 'vehicleType')->get();
+        return ParkingSpace::with('gate', 'vehicleType', 'occupyingVehicleType')->get();
     }
 
     /**

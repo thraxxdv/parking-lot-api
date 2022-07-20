@@ -21,4 +21,9 @@ class ParkingSpace extends Model
     {
         return $this->belongsTo(VehicleType::class);
     }
+
+    public function occupyingVehicleType()
+    {
+        return $this->belongsTo(VehicleType::class, 'occupying_vehicle_type');
+    }
 }
