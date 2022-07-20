@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('vehicle_id')->nullable();
             $table->foreignId('vehicle_type_id');
             $table->boolean('is_occupied')->default(false);
+            $table->foreignId('occupying_vehicle_type')->nullable();
             $table->timestamp('parked_on')->nullable();
             $table->timestamp('left_on')->nullable();
         });

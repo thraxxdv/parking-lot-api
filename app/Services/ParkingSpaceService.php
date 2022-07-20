@@ -18,7 +18,7 @@ class ParkingSpaceService
      *
      * @return ParkingSpace
      */
-    public function getParkingSpaces() : Collection
+    public function getParkingSpaces(): Collection
     {
         return ParkingSpace::with('gate', 'vehicleType')->get();
     }
@@ -29,7 +29,7 @@ class ParkingSpaceService
      * @param string $vehicleTypeId
      * @return ParkingSpace
      */
-    public function createNewParkingSpace(string $vehicleTypeId) : ParkingSpace
+    public function createNewParkingSpace(string $vehicleTypeId): ParkingSpace
     {
         $parkingSpace = new ParkingSpace();
         $parkingSpace->vehicle_type_id = $vehicleTypeId;
@@ -47,7 +47,7 @@ class ParkingSpaceService
      * @param string $timestamp Manually inputted timestamp of when the vehicle has parked
      * @return ParkingSpace 
      */
-    public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId, string $timestamp) : ParkingSpace
+    public function parkVehicle(int $gateId, string | null $vehicleId = null, int $vehicleTypeId, string $timestamp): ParkingSpace
     {
         $gate = Gate::find($gateId);
         $diff = null;
@@ -62,16 +62,17 @@ class ParkingSpaceService
 
             $diff = empty($existingSession) ? $diff : $dateUtils->getTimeDifference($existingSession->left_on, $timestamp);
         }
-        
+
         if (!empty($diff) && $diff <= 60) {
             $parkingSpace = $existingSession;
         } else {
-            
-            $getClosestParkingSpaceFromGate = new GetClosestParkingSpaceFromGate(); 
+
+            $getClosestParkingSpaceFromGate = new GetClosestParkingSpaceFromGate();
             $parkingSpace = $getClosestParkingSpaceFromGate->handle($gate->nearest_space, $vehicleTypeId);
         }
 
         $parkingSpace->is_occupied = 1;
+        $parkingSpace->occupying_vehicle_type = !empty($diff) ? $existingSession->occupying_vehicle_type : $vehicleTypeId;
         $parkingSpace->vehicle_id = !empty($diff) ? $existingSession->vehicle_id : Str::uuid();
         $parkingSpace->parked_on = !empty($diff) ? $existingSession->parked_on : $timestamp;
         $parkingSpace->save();
@@ -86,7 +87,7 @@ class ParkingSpaceService
      * @param string $timestamp Manually inputted timestamp of when the vehicle will unpark
      * @return ParkingSpace
      */
-    public function unparkVehicle(string $uuid, string $timestamp) : ParkingSpace
+    public function unparkVehicle(string $uuid, string $timestamp): ParkingSpace
     {
         $computeParkingFee = new ComputeParkingFee();
 
