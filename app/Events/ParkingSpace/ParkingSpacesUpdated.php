@@ -8,6 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ParkingSpacesUpdated implements ShouldBroadcast
 {
@@ -18,11 +19,8 @@ class ParkingSpacesUpdated implements ShouldBroadcast
      *
      * @return void
      */
-    public $parkingSpaces;
     public function __construct()
     {
-        $parkingSpaceService = new ParkingSpaceService();
-        $this->parkingSpaces = $parkingSpaceService->getParkingSpaces();
     }
 
     /**
@@ -33,5 +31,18 @@ class ParkingSpacesUpdated implements ShouldBroadcast
     public function broadcastOn()
     {
         return new Channel('parking-spaces');
+    }
+
+    public function broadcastAs()
+    {
+        return 'parking-spaces-updated';
+    }
+
+    public function broadcastWith()
+    {
+        $parkingSpaceService = new ParkingSpaceService();
+        return [
+            'parking_spaces' => $parkingSpaceService->getParkingSpaces()
+        ];
     }
 }
