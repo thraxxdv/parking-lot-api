@@ -2,18 +2,19 @@
 
 namespace App\Observers;
 
+use App\Events\ParkingSpace\ParkingSpacesUpdated;
 use App\Models\ParkingSpace;
 
 class ParkingSpaceObserver
 {
 
-    public function created(ParkingSpace $parkingSpace)
+    public function created()
     {
-        //
+        ParkingSpacesUpdated::dispatch();
     }
 
-    public function updated(ParkingSpace $parkingSpace)
+    public function updated()
     {
-        //
+        ParkingSpacesUpdated::dispatch();
     }
 }
