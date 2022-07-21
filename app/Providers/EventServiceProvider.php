@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Gate;
 use App\Models\ParkingSpace;
+use App\Observers\GateObserver;
 use App\Observers\ParkingSpaceObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -23,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
-        ParkingSpace::class => [ParkingSpaceObserver::class]
+        ParkingSpace::class => [ParkingSpaceObserver::class],
+        Gate::class => [GateObserver::class]
     ];
 
     /**
