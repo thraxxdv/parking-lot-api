@@ -75,6 +75,7 @@ class ParkingSpaceService
         $parkingSpace->occupying_vehicle_type = !empty($diff) ? $existingSession->occupying_vehicle_type : $vehicleTypeId;
         $parkingSpace->vehicle_id = !empty($diff) ? $existingSession->vehicle_id : Str::uuid();
         $parkingSpace->parked_on = !empty($diff) ? $existingSession->parked_on : $timestamp;
+        $parkingSpace->left_on = !empty($diff) ? $existingSession->left_on : null;
         $parkingSpace->save();
 
         return $parkingSpace;
