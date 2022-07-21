@@ -15,12 +15,12 @@ class GateUpdated implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('gate-updated');
+        return new Channel('gates-updated');
     }
 
     public function broadcastAs()
     {
-        return 'gate-updated';
+        return 'gates-updated';
     }
 
     public function broadcastWith()
